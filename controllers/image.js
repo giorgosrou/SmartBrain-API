@@ -8,14 +8,13 @@ const handleClarifaiApi = (req,res) => {
     app.models.predict('face-detection', req.body.input)
     .then(data => {
         const faceCount = data.outputs[0].data.regions.length;
-        res.json({data,faceCount});
+        res.json({data, faceCount});
     })
     .catch(err=> res.status(400).json('unable to work with api'))
 }
 
 const handleImage = (req,res,db) => {
     const { id, faceCount } = req.body;
-    console.log(faceCount)
     db('users').where('id', '=', id)
     .increment('entries', faceCount)
     .returning('entries')
